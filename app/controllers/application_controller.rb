@@ -27,6 +27,15 @@ class ApplicationController < Sinatra::Base
     item.to_json
   end
 
+  post "/items" do
+    item = Item.create(
+      name: params[:name],
+      category: params[:category],
+      price: params[:price],
+      list_id: params[:list_id]
+    )
+  end
+
   patch "/items/:id" do
     item = Item.find(params[:id])
     item.update(
@@ -42,5 +51,7 @@ class ApplicationController < Sinatra::Base
     item.destroy
     item.to_json 
   end
+
+
 
 end
