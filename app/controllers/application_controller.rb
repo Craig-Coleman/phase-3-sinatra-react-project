@@ -22,4 +22,25 @@ class ApplicationController < Sinatra::Base
     items.to_json 
   end
 
+  get "/items/:id" do
+    item = Item.find(params[:id])
+    item.to_json
+  end
+
+  patch "/items/:id" do
+    item = Item.find(params[:id])
+    item.update(
+      name: params[:name],
+      category: params[:category],
+      price: params[:price]
+    )
+    item.to_json
+  end
+
+  delete "/items/:id" do
+    item = Item.find(params[:id])
+    item.destroy
+    item.to_json 
+  end
+
 end
