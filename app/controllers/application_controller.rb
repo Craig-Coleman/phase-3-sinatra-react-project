@@ -17,22 +17,6 @@ class ApplicationController < Sinatra::Base
     list.to_json(include: :items)
   end
 
-  get "/lists/:id/items" do 
-    list = List.find_by(id: params[:id])
-    items = list.items.all 
-    items.to_json 
-  end
-
-  get "/items" do 
-    items = Item.all 
-    items.to_json 
-  end
-
-  get "/items/:id" do
-    item = Item.find_by(id: params[:id])
-    item.to_json
-  end
-
   post "/lists/:list_id/items" do
     list = List.find_by(id: params[:list_id])
     item = list.items.create(
@@ -43,6 +27,13 @@ class ApplicationController < Sinatra::Base
     item.to_json
   end
 
+  post "/lists" do
+    list = List.create(
+      name: params[:name]
+    )
+    list.to_json 
+  end
+
   patch "/lists/:id" do
     list = List.find_by(id: params[:id])
     list.update(
@@ -51,7 +42,7 @@ class ApplicationController < Sinatra::Base
     list.to_json
   end
 
-  patch "/items/:id" do
+  patch "/lists/:list_id/items/:id" do
     item = Item.find_by(id: params[:id])
     item.update(
       name: params[:name],
@@ -67,12 +58,10 @@ class ApplicationController < Sinatra::Base
     item.to_json 
   end
 
-  delete "http://localhost:9292/lists/:id" do
+  delete "/lists/:id" do
     list = List.find_by(id: params[:id])
     list.destroy
     list.to_json
   end
-
-
 
 end
