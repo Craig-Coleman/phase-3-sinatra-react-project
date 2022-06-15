@@ -13,7 +13,7 @@ class ApplicationController < Sinatra::Base
   end
 
   get "/lists/:id" do
-    list = List.find(params[:id])
+    list = List.find_by(id: params[:id])
     list.to_json(include: :items)
   end
 
@@ -29,7 +29,7 @@ class ApplicationController < Sinatra::Base
   end
 
   get "/items/:id" do
-    item = Item.find(params[:id])
+    item = Item.find_by(id: params[:id])
     item.to_json
   end
 
@@ -52,7 +52,7 @@ class ApplicationController < Sinatra::Base
   end
 
   patch "/items/:id" do
-    item = Item.find(params[:id])
+    item = Item.find_by(id: params[:id])
     item.update(
       name: params[:name],
       category: params[:category],
@@ -61,10 +61,16 @@ class ApplicationController < Sinatra::Base
     item.to_json
   end
 
-  delete "/items/:id" do
-    item = Item.find(params[:id])
+  delete "/lists/:list_id/items/:id" do
+    item = Item.find_by(id: params[:id])
     item.destroy
     item.to_json 
+  end
+
+  delete "http://localhost:9292/lists/:id" do
+    list = List.find_by(id: params[:id])
+    list.destroy
+    list.to_json
   end
 
 
